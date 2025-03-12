@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>File Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand">File Management</span>
+            <div class="d-flex">
+                <span class="navbar-text me-3 text-white">Logged in as: <strong>{{ session['username'] }}</strong></span>
+                <a href="/" class="btn btn-outline-light me-2">Back to Chat</a>
+                <a href="/logout" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- File Upload Form -->
+    <div class="container mt-4">
+        <div class="card p-3">
+            <h3>Upload a File</h3>
+            <form action="/files" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" class="form-control mb-2">
+                <button type="submit" class="btn btn-success">Upload</button>
+            </form>
+        </div>
+
+        <!-- Uploaded Files List -->
+        <h3 class="mt-4">Uploaded Files</h3>
+        <ul class="list-group">
+            {% for file in files %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('download_file', filename=file['filename']) }}">{{ file['filename'] }}</a>
+                    <small class="text-muted">{{ file['timestamp'] }}</small>
+
+                    <!-- Admin Delete Button -->
+                    {% if session["is_admin"] %}
+                        <form method="POST" action="/delete_file/{{ file['id'] }}" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>
