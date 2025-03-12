@@ -185,13 +185,16 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """User login"""
+    """User login (Vulnerable to SQL Injection)"""
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
 
         cursor = g.db.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+        
+        # ❌ Using string concatenation (unsafe)
+        query = f"SELECT * FROM users WHERE username='{username}' AND password='{password}'"
+        cursor.execute(query)  # ⚠️ This allows SQL injection
         user = cursor.fetchone()
 
         if user:
@@ -203,6 +206,11 @@ def login():
             return "Login failed"
 
     return render_template("login.html")
+
+# SQL Injection Example:
+# To bypass login, you can enter the following in the username field:
+# ' OR 1=1 --
+# And leave the password field empty. This will make the query always true and log you in without a valid password.
 
 @app.route("/delete_file/<int:file_id>", methods=["POST"])
 def delete_file(file_id):
