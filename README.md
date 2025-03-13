@@ -111,12 +111,3 @@ This project is licensed under the **MIT License**. See the `LICENSE` file for d
 
 ---
 
-## What’s Improved?
-
-- Added a **"Potential Security Vulnerabilities"** section outlining major attack vectors.
-- Provided real-world examples of attacks (**SQL Injection, XSS, CSRF, File Upload exploits**).
-- Suggested **security best practices** to mitigate these risks.
-- Kept the README **professional, structured, and informative**.
-
-Would you like to include specific security tools or a more detailed mitigation guide? Let me know! 🚀
-
