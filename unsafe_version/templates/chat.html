@@ -28,7 +28,8 @@
             {% for msg in messages %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
-                        <strong>{{ msg['username'] }}:</strong> {{ msg['content'] }}
+                        <!-- This line is vulnerable to XSS attacks because it renders user content without escaping HTML -->
+                        <strong>{{ msg['username'] }}:</strong> {{ msg['content'] | safe }} 
                         <small class="text-muted" id="timestamp-{{ msg['id'] }}" data-timestamp="{{ msg['timestamp'] }}"></small>
                     </div>
                     <div>
