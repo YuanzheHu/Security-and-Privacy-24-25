@@ -2,7 +2,12 @@ from flask import Flask, render_template, request, redirect, session, g, send_fr
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
-from models import get_db_connection, init_db
+from models import get_db_connection
+import init_db as init_database
+import webbrowser
+import threading
+import time
+
 
 app = Flask(__name__)
 app.secret_key = "unsafe-secret-key"  # ❌ Hardcoded secret key (vulnerability)
@@ -235,6 +240,12 @@ def delete_file(file_id):
 
     return "File not found", 404
 
+def open_browser():
+    """在 Flask 启动后自动打开浏览器"""
+    time.sleep(1)  # 稍作等待，确保 Flask 已启动
+    webbrowser.open("http://127.0.0.1:5000/")
+
 if __name__ == "__main__":
-    init_db()
-    app.run(debug=True)
+    threading.Thread(target=open_browser, daemon=True).start()
+    init_database.init_db()
+    app.run(debug=True, use_reloader=False)
